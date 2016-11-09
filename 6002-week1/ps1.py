@@ -59,28 +59,20 @@ def greedy_cow_transport(cows,limit=10):
     result = []
     shipment = []
     currentlimit = limit
-    while cows:
-        # heavycow = max(cows.items(), key=operator.itemgetter(1))[0]
+    tcows = cows.copy()
+    while tcows:
 
-        heavycow = max(cows, key=lambda i: cows[i] )
-
-        # if cows[i] >= currentlimit
-
-        # print ( cows.items(), key=operator.itemgetter(1) )
-        # heavycow = dic[max(k for k in dic if k <= var)]
-        if currentlimit > cows[heavycow]:
+        fitcows =  {key:v for key,v in tcows.items() if v < currentlimit}
+        if fitcows:
+            heavycow = max(fitcows, key=lambda key: fitcows[key])
             shipment.append(heavycow)
-            currentlimit -= cows[heavycow]
-            del cows[heavycow]
+            currentlimit -=tcows[heavycow]
+            del tcows[heavycow]
         else:
             result.append(shipment)
             shipment = []
             currentlimit = limit
     if shipment: result.append(shipment)
-
-
-
-
     return result
 
 
@@ -106,9 +98,11 @@ def brute_force_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
+    import itertools
+    # print(cows)
+    for i in itertools.combinations(cows.items(), len(cows)):
+        print(i)
 
-        
 # Problem 3
 def compare_cow_transport_algorithms():
     """
