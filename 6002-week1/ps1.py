@@ -98,10 +98,37 @@ def brute_force_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    import itertools
+    import operator
     # print(cows)
-    for i in itertools.combinations(cows.items(), len(cows)):
-        print(i)
+    mintrips = len(cows)
+    result = []
+
+    def flatten(items, seqtypes=(list)):
+        for i, x in enumerate(items):
+            while i < len(items) and isinstance(items[i], seqtypes):
+                items[i:i + 1] = items[i]
+        return items
+
+    for item in get_partitions(cows.items()):
+        #print([sum(i[1]) for i in item] )
+        variant =  [i for i in item if (sum( [x[1] for x in i] )) <= limit]
+        # if len(variant) ==1 : variant = variant[0]
+        # if len(flatten(i[:]))==4
+
+
+        # print(len(variant), len(flatten(variant)), variant)
+        if len(variant) <= mintrips and len(flatten(variant[:])) == len(cows):
+            result = variant
+            mintrips = len(variant)
+    outerlist = []
+    for i in result:
+        innerlist = []
+        for j in i:
+            innerlist.append(j[0])
+        outerlist.append(innerlist)
+
+    #print(outerlist)
+    return outerlist
 
 # Problem 3
 def compare_cow_transport_algorithms():
@@ -132,6 +159,6 @@ limit=15
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+print(brute_force_cow_transport({'Betsy': 65, 'Daisy': 50, 'Buttercup': 72}, 75))
 
 
